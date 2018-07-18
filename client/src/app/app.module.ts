@@ -66,6 +66,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 import { CapitalizePipe } from './pipes/capitalize.pipe'
 import { UniqueValuesPipe } from './pipes/uniqueValues.pipe'
 
+import { environment } from './../environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -97,7 +99,7 @@ import { UniqueValuesPipe } from './pipes/uniqueValues.pipe'
     AppRoutes,
     HttpModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyD-28apoLg5KsGw9h4jAJ-IoEpN79HH42o'
+      apiKey: environment.googleapikey
     }),
     FormsModule,
     ReactiveFormsModule
