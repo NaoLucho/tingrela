@@ -1,0 +1,35 @@
+.footer-container {
+	margin-right: 13px;
+	margin-left: 13px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.copyright-box {
+}
+
+.icon-box {
+
+}
+
+.follow-icons {
+	color: #593821;
+	font-size: 40px;
+	font-family: "Open Sans",sans-serif;
+	padding:3px;
+	border-radius: 5px;
+	background-color: transparent;
+	margin-bottom: 0px;
+}
+
+.follow-icons:hover {
+	background-color: #593821;
+	color:white;
+	transition: all ease-in-out 300ms;
+	border-radius: 5px;
+}
+
+.follow-text {
+	color: #593821;
+	font-family: "Open Sans",sans-serif;
+}

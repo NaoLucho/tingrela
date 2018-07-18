@@ -1,0 +1,21 @@
+<div class="navbar">
+  <a routerLink="/accueil" class="clear button brown large">Accueil</a>
+  <a [routerLink]="['admin/category', 'chocolats']" class="clear button brown large">Chocolats</a>
+  <a [routerLink]="['admin/category', 'confiseries']" class="clear button brown large">Confiseries</a>
+  <img src="assets/img/logo.jpg" alt="Logo" class="logo">
+  <a routerLink="/profil" class="clear button brown large">Profil</a>
+  <a routerLink="/contact" class="clear button brown large">Contact</a>
+  <a routerLink="/commandes" class="clear button brown large">Commandes</a>
+
+  <a *ngIf="hasAuthToken()" (click)="logout()" href="#" class="clear button brown large">Logout</a>
+</div>
+<h1>
+  News
+</h1>
+<div>
+  Les dernières commandes recues
+</div>
+
+<div>
+  Nombre de visiteurs
+</div>

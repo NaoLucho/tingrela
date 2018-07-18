@@ -1,0 +1,43 @@
+<div class="small-6 cell box h-75"
+	[ngStyle]="{'background-image': 'url(assets/img/types/'+parentType.type+'.jpg'}"
+	on-mouseenter="cache = 'true'"
+	on-mouseleave="cache = 'false'" 
+	routerLink="/shop/{{parentType.type}}"
+	[@visibilityChanged]="visibility"
+	style="opacity: 0"
+>
+
+	<div class="black-filter"></div>
+
+	<div class="grid-y box-content">
+		<div class="cell small-2"></div>
+		<div class="cell small-2 align-self-middle">
+			<h1 class="white padding-left-2">{{parentType.type | capitalize}}</h1>
+		</div>
+
+		<!-- bouton du milieu -->
+
+		<div class="cell small-3 align-self-middle">
+			<div class="type-button-container">
+				<a 
+				routerLink="/shop/{{parentType.type}}" 
+				class="type-button"
+				[@visibilityChanged]="cache"
+				style="opacity: 0"
+				>
+					Découvrez les produits
+				</a>
+			</div>
+		</div>
+		<div class="cell small-6 align-self-middle">
+			<div class="grid-x h-100">
+				<div class="cell small-2"></div>
+				<div class="cell small-8 light-grey">
+					<p class="type-presentation">
+						{{parentType.description}}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

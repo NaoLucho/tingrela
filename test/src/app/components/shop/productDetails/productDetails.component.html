@@ -1,0 +1,27 @@
+<div *ngIf="product">
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-4">
+                <img src="{{serverUrl}}images/products/{{product.image_name}}" alt="" class="product-pic">
+            </div>
+            <div class="cell auto">
+                <h2>{{product.name}}</h2>
+
+                <p>{{product.description}} </p>
+
+                <p>Prix : {{product.price}} euros/kg </p>
+
+                <p>Quantité disponible : {{product.stock}} kg</p>
+
+                <span>Panier : </span>
+                <button class="button tiny quantity-button" *ngIf="product.qte" (click)="deleteQte(product)"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                <span *ngIf="product.qte" >{{product.qte}}</span>
+                <span *ngIf="!product.qte" >0</span>
+                <span> {{product.unit}}</span>
+                <button class="button tiny quantity-button" (click)="addQte(product)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+
+            </div>
+        </div>
+    </div>
+
+</div>

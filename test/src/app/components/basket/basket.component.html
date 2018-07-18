@@ -1,0 +1,85 @@
+<div class="contentpage" style="opacity: 0" [@visibilityChanged]="loader == 'false'">
+  <div class="grid-container">
+    <h2>Votre Panier</h2>
+    <div class="grid-x grid-margin-x">
+      <div class="cell auto">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Références</th>
+              <th>Quantité</th>
+              <th>Prix</th>
+              <th>Total HT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="products.length == 0">
+              <td colspan="4">
+                <div>Aucun article dans votre panier</div>
+              </td>
+            </tr>
+
+            <tr *ngFor="let product of products">
+              <td>{{ product.name }}</td>
+              <td>
+                <div class="product-quantity">
+                  <button class="button tiny quantity-button" *ngIf="product.qte" (click)="deleteQte(product)"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                  <span *ngIf="product.qte">{{product.qte}}</span>
+                  <span *ngIf="!product.qte">0</span>
+                  <span> {{product.unit}}</span>
+                  <button class="button tiny quantity-button" (click)="addQte(product)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+
+                <a (click)="deleteformbasket(product.id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+              </td>
+              <td>{{ product.price }}€/{{ product.step }} {{ product.unit }}</td>
+              <td>{{ (product.qte/product.step) * product.price }} € </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <a *ngIf="products.length > 0" routerLink="/commande" class="button classic-button pull-right">Valider mon panier</a>
+
+        <a routerLink="/shop/chocolats" class="button classic-button">Continuer mes achats</a>
+
+      </div>
+      <div *ngIf="products.length > 0" class="cell small-3">
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th colspan="2">Récapitulatif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Total HT :</th>
+              <th>{{ totalHT }} €</th>
+            </tr>
+            <tr>
+              <th>+ TVA ({{(tva*100)}}%)</th>
+              <th>{{ totalTva }} €</th>
+            </tr>
+            <tr>
+              <th>Total TTC :</th>
+              <th>{{ totalTTC }} €</th>
+            </tr>
+          </tbody>
+        </table>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader" [@visibilityChanged]="loader == 'true'" *ngIf="loader=='true'">
+  <div class="spinner pulse-spinner"></div>
+</div>
+
+<!-- <div class="btn btn-primary" (click)="addProduct(1)">add product 1</div>
+<div class="btn btn-primary" (click)="addProduct(12,8)">add product 12 qte 8</div>
+<div class="btn btn-primary" (click)="addProduct(10,4)">add product 10 qte 4</div>
+<div class="btn btn-primary" (click)="addProduct(4,6)">add product 4 qte 4</div>
+<div class="btn btn-primary" (click)="getBasket()">getBasket</div>
+<div class="btn btn-primary" (click)="clearSession()">clearSession</div> -->
