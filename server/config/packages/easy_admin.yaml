@@ -1,0 +1,55 @@
+easy_admin:
+    entities:
+        # List the entity class name you want to manage
+        Product:
+            class: App\Entity\Product
+            list:
+                fields:
+                    -   'name'
+                    - { property: 'imageName', type: 'image', base_path: '%app.path.product_images%' }
+            show:
+                fields:
+                    -   'name'
+                    - { property: 'imageName', type: 'image', base_path: '%app.path.product_images%' }
+            form:
+                fields:
+                    - 'name'
+                    - 'description'
+                    - 'price'
+                    - 'unit'
+                    - 'step'
+                    - 'stock'
+                    - 'importance'
+                    - { property: 'imageFile', type: 'vich_image' }
+        Category:
+            class: App\Entity\Category
+            form:
+                fields:
+                    - 'category'
+                    - 'description'
+                    - { property: 'products', type: 'entity', type_options: { class: 'App\Entity\Product', multiple: true } }
+                    - 'type'
+        Type: 
+            class: App\Entity\Type
+        Creation:
+            class: App\Entity\Creation
+            form: 
+                fields:
+                    - 'title'
+                    - 'description'
+                    - 'date'
+                    - { property: 'imageFile', type: 'vich_image' }
+            list:
+                fields:
+                    -   'title'
+                    - { property: 'imageName', type: 'image', base_path: '%app.path.creation_images%' }
+            show:
+                fields:
+                    -   'title'
+                    - { property: 'imageName', type: 'image', base_path: '%app.path.creation_images%' }
+        EcommerceConfig:
+            class: App\Entity\EcommerceConfig
+            form:
+                fields:
+                    - 'tva'
+            

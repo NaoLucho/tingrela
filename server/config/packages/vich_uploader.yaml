@@ -1,0 +1,14 @@
+parameters:
+    app.path.product_images: /uploads/images/products
+    app.path.creation_images: /uploads/images/creations
+
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        products:
+            uri_prefix: '%app.path.product_images%'
+            upload_destination: '%kernel.root_dir%/../public%app.path.product_images%'
+        creations:
+            uri_prefix: '%app.path.creation_images%'
+            upload_destination: '%kernel.root_dir%/../public%app.path.creation_images%'
