@@ -1,0 +1,27 @@
+<div class="grid-container" [@visibilityChanged]="visibility">
+	<div *ngFor="let creation of creations; let i = index; let last = last" >
+		<div *ngIf="i%2 == 0" class="grid-x grid-margin-x">
+			<div class="cell shrink">
+				<img src="assets/img/creation/{{creation.imageName}}" alt="" class="creation-pic">
+			</div>
+			<div class="cell auto">
+				<h2>{{creation.title}}</h2>
+				<p>{{creation.description}}</p>
+			</div>
+		</div>
+		<div *ngIf="i%2 == 1" class="grid-x grid-margin-x">
+			<div class="cell auto">
+				<h2>{{creation.title}}</h2>
+				<p>{{creation.description}}</p>
+			</div>
+			<div class="cell shrink">
+				<img src="assets/img/creation/{{creation.imageName}}" alt="" class="creation-pic">
+			</div>
+		</div>
+		<hr *ngIf="!last">
+	</div>
+</div>
+
+<div class="loader" [@visibilityChanged]="loader" >
+	<div class="spinner pulse-spinner"></div>
+</div>

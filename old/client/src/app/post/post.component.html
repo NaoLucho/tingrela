@@ -1,0 +1,11 @@
+<h1>Posts</h1>
+<div [hidden]="!error" class="alert alert-danger" role="alert">
+  <span class="glyficon glificon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  {{ error }}
+</div>
+<ul>
+  <li *ngFor="let post of posts">
+    <a href="#">{{ post.title }}</a>
+  </li>
+</ul>

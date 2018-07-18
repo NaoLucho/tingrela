@@ -1,0 +1,26 @@
+<?php
+
+namespace AppBundle\DataFixtures\ORM;
+
+use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use AppBundle\Entity\Type;
+
+
+class LoadType implements FixtureInterface
+{
+   public function load(ObjectManager $manager)
+   {
+      $type = new Type();
+      $type->setType('Chocolats');
+      $type->setDescription('Description type Chocolats');
+
+      $type2 = new Type();
+      $type2->setType('Confiseries');
+      $type2->setDescription('Description type Confiseries');
+
+      $manager->persist($type);
+      $manager->persist($type2);
+      $manager->flush();
+   }
+}

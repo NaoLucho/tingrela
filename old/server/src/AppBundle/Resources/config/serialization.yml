@@ -1,0 +1,83 @@
+AppBundle\Entity\Type:
+    attributes:
+        id:
+            groups: ['typeonly', 'type', 'category']
+        type:
+            groups: ['typeonly', 'type', 'category']
+        description:
+            groups: ['type', 'category']
+        categories:
+            groups: ['type']
+
+AppBundle\Entity\Category:
+    attributes:
+        id:
+            groups: ['category', 'product', 'type']
+        category:
+            groups: ['category', 'product', 'type']
+        description:
+            groups: ['category', 'product', 'type']
+        type:
+            groups: ['category', 'product']
+        products:
+            groups: ['category', 'type']
+
+
+AppBundle\Entity\Product:
+    attributes:
+        id:
+            groups: ['product', 'category', 'type', 'commande']
+        name:
+            groups: ['product', 'category', 'type', 'commande']
+        description:
+            groups: ['product', 'category', 'type']
+        price:
+            groups: ['product', 'category', 'type']
+        stock:
+            groups: ['product', 'category', 'type']
+        categories:
+            groups: ['product']
+        placement:
+            groups: ['product', 'category', 'type']
+        unity:
+            groups: ['product', 'category', 'type']
+        pas:
+            groups: ['product', 'category', 'type']
+        imageName:
+            groups: ['product', 'category', 'type']
+
+AppBundle\Entity\Commande:
+    attributes:
+        id:
+            groups: ['commande']
+        firstname:
+            groups: ['commande']
+        lastname:
+            groups: ['commande']
+        email:
+            groups: ['commande']
+        phone:
+            groups: ['commande']
+        adresse:
+            groups: ['commande']
+        postalcode:
+            groups: ['commande']
+        city:
+            groups: ['commande']
+        comment:
+            groups: ['commande']
+        validated:
+            groups: ['commande']
+        reference:
+            groups: ['commande']
+        commandeBaskets:
+            groups: ['commande']
+
+AppBundle\Entity\CommandeBasket:
+    attributes:
+        id:
+            groups: ['commande']
+        product:
+            groups: ['commande']
+        quantity:
+            groups: ['commande']
