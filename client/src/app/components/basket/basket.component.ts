@@ -32,7 +32,6 @@ export class BasketComponent {
   constructor(
     private basketService: BasketService
   ) {
-    this.getBasket()
     this.getTva()
   }
 
@@ -41,11 +40,13 @@ export class BasketComponent {
       // console.log("getTva in comp "+data)
       if (data) {
         this.tva = data;
-        }
-      }, error => {
-        // Log errors if any
-        alert('Il y a eu une erreur. Réferrez vous à l\'administrateur')
-      });
+      }
+    }, error => {
+      // Log errors if any
+      alert('Il y a eu une erreur. Réferrez vous à l\'administrateur')
+    }, () => {
+      this.getBasket()
+    });
   }
 
   // Function to check storage validity (1day)
@@ -78,24 +79,25 @@ export class BasketComponent {
       .subscribe(data => {
           if (data) {
             this.products = data;
-             console.log(this.products)
+            console.log(this.products)
             this.basket = this.basketService.getBasket();
 
             // Assign product qte from basket
-            this.basket.forEach(basketItem => {
+            this.basket.forEach((basketItem) => {
               this.products.forEach(product => {
                 if ( basketItem.id === product.id ) {
                   product.qte = basketItem.qte;
                 }
               });
+              this.refreshTotal();
             });
           }
         }, error => {
           // Log errors if any
           alert('Il y a eu une erreur. Réferrez vous à l\'administrateur.')
         }, () => {
-          this.refreshTotal();
           this.loader = 'false';
+          console.log('complete')
         }
       );
   }
@@ -107,6 +109,7 @@ export class BasketComponent {
   }
 
   refreshTotal() {
+    console.log('ok');
     this.totalHT = this.basketService.getBasketPrice();
     this.totalTva = this.totalHT * this.tva; // .00000001 apparait de temps en temps!?? c'est quoi ce délire
     // this.totalTva.toFixed(2) //Ne résoud pas le problème

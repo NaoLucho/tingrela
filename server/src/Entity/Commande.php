@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommandeRepository")
@@ -17,26 +18,16 @@ class Commande
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $firstname;
+    private $comment;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="datetime")
      */
-    private $lastname;
+    private $date;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $phone;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $email;
-
-    /**
+        /**
      * @ORM\Column(type="string", length=255)
      */
     private $address;
@@ -52,16 +43,6 @@ class Commande
     private $city;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $comment;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date;
-
-    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $validated;
@@ -71,60 +52,116 @@ class Commande
      */
     private $reference;
 
+    /**
+    * @ORM\OneToMany(targetEntity="App\Entity\CommandeBasket", mappedBy="commande", cascade={"remove"})
+    */
+    private $commandeBaskets;
+
+    /**
+     * @var Customer
+     *
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="commande")
+     */
+    private $customer;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $total;
+
+    public function __toString() {
+        return '' . $this->id;
+    }
+
+    public function __construct()
+    {
+        $this->date = new \DateTime('now');
+        $this->commandeBaskets = new ArrayCollection();
+    }
+
     public function getId()
     {
         return $this->id;
     }
 
-    public function getFirstname(): ?string
+    public function getComment(): ?string
     {
-        return $this->firstname;
+        return $this->comment;
     }
 
-    public function setFirstname(string $firstname): self
+    public function setComment(?string $comment): self
     {
-        $this->firstname = $firstname;
+        $this->comment = $comment;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->lastname;
+        return $this->date;
     }
 
-    public function setLastname(string $lastname): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->lastname = $lastname;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getPhone(): ?string
+    public function getValidated(): ?bool
     {
-        return $this->phone;
+        return $this->validated;
     }
 
-    public function setPhone(string $phone): self
+    public function setValidated(?bool $validated = false): self
     {
-        $this->phone = $phone;
+        $this->validated = $validated;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getReference(): ?string
     {
-        return $this->email;
+        return $this->reference;
     }
 
-    public function setEmail(string $email): self
+    public function setReference(string $reference): self
     {
-        $this->email = $email;
+        $this->reference = $reference;
 
         return $this;
     }
 
-    public function getAddress(): ?string
+    public function getCommandeBaskets()
+    {
+        return $this->commandeBaskets;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param Customer $customer
+     *
+     * @return Commande
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+     public function getAddress(): ?string
     {
         return $this->address;
     }
@@ -160,50 +197,14 @@ class Commande
         return $this;
     }
 
-    public function getComment(): ?string
+    public function getTotal(): ?int
     {
-        return $this->comment;
+        return $this->total;
     }
 
-    public function setComment(?string $comment): self
+    public function setTotal(int $total): self
     {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getValidated(): ?bool
-    {
-        return $this->validated;
-    }
-
-    public function setValidated(?bool $validated): self
-    {
-        $this->validated = $validated;
-
-        return $this;
-    }
-
-    public function getReference(): ?string
-    {
-        return $this->reference;
-    }
-
-    public function setReference(string $reference): self
-    {
-        $this->reference = $reference;
+        $this->total = $total;
 
         return $this;
     }

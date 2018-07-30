@@ -1,12 +1,3 @@
-<!-- <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-  data-zip-code="true">
-
-
-</script> -->
-
-<!-- <script src="https://vicopo.selfbuild.fr/api.min.js">
-</script> -->
-
 <div class="content" style="opacity: 0" [@visibilityChanged]="loader == 'false'">
   <div class="formulaire">
     <h4>Information à saisir</h4>
@@ -25,9 +16,6 @@
             Prénom requis (3 caractères minimum)
           </div>
         </div>
-        <!-- <div *ngIf="!firstname.valid && (firstname.dirty || formCommande.submitted ) && firstname_finishchanged">
-          Prénom requis (3 caractères minimum)
-        </div> -->
       </div>
       <div class="form-group">
         <div class="d-flex justify-content-between">
@@ -40,9 +28,6 @@
             Nom requis (3 caractères minimum)
           </div>
         </div>
-        <!-- <div *ngIf="!lastname.valid && (lastname.dirty || formCommande.submitted ) && lastname_finishchanged">
-          Nom requis (3 caractères minimum)
-        </div> -->
       </div>
       <div class="form-group">
         <div class="d-flex justify-content-between">
@@ -58,19 +43,7 @@
             L'email n'est pas valide.
           </div>
         </div>
-        <!-- <div *ngIf="!email.valid && (email.dirty || email.touched || formCommande.submitted ) && email_finishchanged">
-          Email incorrect (@ et . obligatoire)
-        </div> -->
       </div>
-      <!-- <div class="form-group">
-        <div class="d-flex justify-content-between">
-          <label for="email">Confirmation de votre email :</label>
-          <input type="text" [(ngModel)]="emailconfirm" name="email" minlength="3" placeholder="votre email" required #emailconfirm="ngModel">
-        </div>
-        <div *ngIf="!emailconfirm.valid && (emailconfirm.dirty || formCommande.submitted )">
-          Confirmation de l'email non identique à l'email saisie.
-        </div>
-      </div> -->
       <legend>Adresse</legend>
       <div class="form-group">
         <div class="d-flex justify-content-between">

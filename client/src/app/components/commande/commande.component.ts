@@ -14,7 +14,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Fader } from './../../animations/fader.animation'
 
-import * as jQuery from 'jquery'
+import { environment } from './../../../environments/environment';
+
 // import * as $ from 'jquery'
 // import {vicopo} from 'vicopo'
 // import {vicopo, vicopoTargets, vicopoClean } from 'vicopo'
@@ -29,13 +30,14 @@ import { element } from 'protractor';
   animations: [Fader()]
 })
 
-export class CommandeComponent implements OnInit {
+export class CommandeComponent {
   loader = 'true';
 
   products;
   basketlist = []
   basket = [];
   totalHT = 0;
+  handler: any
   tva = 0;
   totalTTC = 0;
   totalTva = 0;
@@ -60,11 +62,13 @@ export class CommandeComponent implements OnInit {
 
     this.commande.postalcode = 12345
     this.commande.city = 'VILLE'
+    this.getTva()
   }
 
 
   onSubmitCommande(value: Commande) {
     this.submitted = true;
+    this.loader = 'true'
     // ici la Commande est enregistrée dans la variable commande via NgModel
     // Demander le service checkout pour de paiement:
     this.openCheckout();
@@ -75,13 +79,21 @@ export class CommandeComponent implements OnInit {
     // let commandeinfo = this.commande;
     // let functP = this.sendPayment;
 
-    const handler = (<any>window).StripeCheckout.configure({
-      key: 'pk_test_oi0sKPJYLGjdvOXOM8tE8cMa', // Clef définissant la connexion au compte Stripe, à changer pour la PROD
+
+    this.handler = StripeCheckout.configure({
+      key: environment.stripeapikey, // Clef définissant la connexion au compte Stripe, à changer pour la PROD
       locale: 'auto',
       currency: 'eur',
       allowRememberMe: false, // Désactivation de 'se souvenir de moi' puisque nous faisons payer le client en direct.
       name: 'Paiement de votre panier',
+      email: this.commande.email,
       description: 'Sécurisé par Stripe.com',
+      opened: function () {
+        _this.loader = 'false'
+      },
+      closed: function() {
+        _this.loader = 'false'
+      },
       // email: 'toto@dede.de', // TRY TO ADD EMAIL
       token: function (token: any) {
         // You can access the token ID with `token.id`.
@@ -95,7 +107,7 @@ export class CommandeComponent implements OnInit {
 
 
 
-        resp = _this.paymentService.postPayment(token, _this.commande, _this.basket, _this.totalTTC)
+        resp = _this.paymentService.postPayment(token.id, _this.commande, _this.basket, _this.totalTTC)
 
         resp.subscribe(
           data => {
@@ -123,15 +135,9 @@ export class CommandeComponent implements OnInit {
 
       }
     });
-
-    handler.open({
+    this.handler.open({
       amount: this.totalTTC * 100// en centimes: 100 = 1€
     });
-
-  }
-
-  ngOnInit() {
-    this.getBasket();
   }
 
   getTva() {
@@ -146,6 +152,8 @@ export class CommandeComponent implements OnInit {
         // Log errors if any
         // console.log(err);
         alert('Il y a eu une erreur. Réferrez vous à l\'administrateur')
+      }, () => {
+        this.getBasket();
       });
   }
 

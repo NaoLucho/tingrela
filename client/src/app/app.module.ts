@@ -5,12 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 
-//Import des bibliothèques annexes
+// Import des bibliothèques annexes
 
 import { AgmCoreModule } from '@agm/core'
-//import { ? } from vicopo
+// import { ? } from vicopo
 
-//Import des pages
+// Import des pages
 
 import { AppComponent } from './app.component'
 import { HomeComponent } from './components/home/home.component'
@@ -22,7 +22,7 @@ import { CommandeComponent} from './components/commande/commande.component'
 
 import { PaymentComponent} from './components/payment/payment.component'
 
-//Import des composants
+// Import des composants
 
 import { PageNotFound } from './components/pageNotFound/page_not_found.component'
 import { AppRoutes } from './app.routes'

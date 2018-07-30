@@ -241,13 +241,14 @@ class Product
     public function addCategory(Category $category)
     {
         $this->categories[] = $category;
-        //$category->addProduct($this);
+        $category->addProduct($this);
         return $this;
     }
 
     public function removeCategory(Category $category)
     {
         $this->categories->removeElement($category);
+        $category->removeProduct($this);
     }
 
     public function getCategories()

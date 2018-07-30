@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    stripe_api_key: '%env(STRIPE_API_KEY)%'
 
 services:
     # default configuration for services in *this* file
@@ -32,3 +33,11 @@ services:
 
     sensio_framework_extra.view.listener:
         alias: Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener
+
+    App\Services\StripeClient:
+        autowire: true
+        autoconfigure: true
+        lazy: true
+
+    my.stripe.client:
+        alias: App\Services\StripeClient

@@ -28,6 +28,7 @@ export class ProductListComponent implements OnChanges, OnInit {
   private nbImages = 0;
   private imagesLoaded = false;
   private serverUrl: string;
+  private tva;
 
   protected qteListe: number[] = [];
 
@@ -38,6 +39,7 @@ export class ProductListComponent implements OnChanges, OnInit {
     private globalsService: GlobalsService
   ) {
     this.serverUrl = globalsService.getAssets();
+    this.getTva();
   }
 
 
@@ -75,7 +77,20 @@ export class ProductListComponent implements OnChanges, OnInit {
         this.category = category;
         this.products = this.getProducts(this.data, this.type);
       }, err => console.log(err));
+  }
 
+  getTva() {
+    this.basketService.getTva().subscribe(data => {
+      // console.log("getTva in comp "+data)
+      if (data) {
+        this.tva = data;
+      }
+    }, error => {
+      // Log errors if any
+      alert('Il y a eu une erreur. Réferrez vous à l\'administrateur')
+    }, () => {
+     /*  this.getBasket() */
+    });
   }
 
   getProducts(data, selectedType) {

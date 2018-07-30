@@ -3,6 +3,7 @@ easy_admin:
         # List the entity class name you want to manage
         Product:
             class: App\Entity\Product
+            label: "Produits"
             list:
                 fields:
                     -   'name'
@@ -21,8 +22,10 @@ easy_admin:
                     - 'stock'
                     - 'importance'
                     - { property: 'imageFile', type: 'vich_image' }
+                    - { property: 'categories', type_options: { by_reference: false } }
         Category:
             class: App\Entity\Category
+            label: 'Catégories'
             form:
                 fields:
                     - 'category'
@@ -31,8 +34,10 @@ easy_admin:
                     - 'type'
         Type: 
             class: App\Entity\Type
+            label: "Types de produits"
         Creation:
             class: App\Entity\Creation
+            label: "Créations personnelles"
             form: 
                 fields:
                     - 'title'
@@ -49,7 +54,18 @@ easy_admin:
                     - { property: 'imageName', type: 'image', base_path: '%app.path.creation_images%' }
         EcommerceConfig:
             class: App\Entity\EcommerceConfig
+            label: "Configuration Ecommerce"
             form:
                 fields:
                     - 'tva'
-            
+        Commande:
+            class: App\Entity\Commande
+            label: 'Commandes'
+            list:
+                actions: ["show", "-edit", "-delete"]
+        Customer:
+            class: App\Entity\Customer
+            label: 'Clients'
+        CommandeBasket:
+            class: App\Entity\CommandeBasket
+            label: 'Produits achetés'

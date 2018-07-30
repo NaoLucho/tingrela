@@ -24,7 +24,7 @@
 
 			<div class="card-section">
 				<div>
-					<span class="product-name">{{product.name}}</span> <span class="product-price">{{product.price}}€/{{product.step}}{{product.unit}}</span>
+					<span class="product-name">{{product.name}}</span> <span class="product-price">{{product.price * (1+tva)}} €/{{product.step}}{{product.unit}} TTC</span>
 					<div class="product-quantity">
 						<button class="button tiny quantity-button" *ngIf="product.qte" (click)="deleteQte(product)"><i class="fa fa-minus" aria-hidden="true"></i></button>
 						<span *ngIf="product.qte" >{{product.qte}}</span>
