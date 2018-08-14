@@ -1,0 +1,63 @@
+.my-navbar {
+    text-align: center;
+}
+
+.my-navbar a.sandwich {
+    display: none;
+}
+
+@media screen and (max-width: 1200px) {
+    .my-navbar a {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .my-navbar {
+        text-align: left;
+        position: relative;
+        height: 80px;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .my-nav-spaced {
+        margin-bottom: 240px;
+    }
+
+    .my-nav-spaced a:first-child {
+        padding-top: 80px;
+    }
+    
+    .my-navbar a {
+        display: none;
+        text-align: center;
+    }
+
+    .my-navbar img {
+        position: absolute;
+        top:0;
+        left:0;
+        width: auto;
+        height: 80px;
+    }
+
+    .sandwich {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: block !important;
+        margin-top: 16px;
+        margin-right: 15px;
+    }
+
+    .show-menu {
+        display: block !important;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 0;
+        float: none;
+        text-align: right;
+    }
+}

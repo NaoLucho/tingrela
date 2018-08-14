@@ -35,6 +35,13 @@
     border-color: $light-borders;
 }
 
+@media screen and (max-width: 400px) {
+    .tab {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
 /* Change the link color to #111 (black) on hover */
 .tab:hover, .tab:focus {
     color: $light-brown;
@@ -53,6 +60,7 @@
 
 .menu-item {
     color: $brown;
+    width: 100%;
 }
 
 .menu-item:hover {
@@ -61,4 +69,8 @@
 
 .menu-item-clicked {
     color: $light-brown;
+}
+
+.category-menu {
+    list-style: none;
 }

@@ -1,14 +1,16 @@
 
-<ul class="vertical menu" 
+<ul class="category-menu" 
 [@openingAnimation]="categories.length"
 >
-	<li><a 
-	class="menu-item" 
-	(click)="filterCategory(undefined, 9999)"
-	[ngClass]="{'menu-item-clicked': filteredCategory === 9999}"
-	
-	>
-		Tous</a></li>
+	<li>
+		<a 
+		class="menu-item" 
+		(click)="filterCategory(undefined, 9999)"
+		[ngClass]="{'menu-item-clicked': filteredCategory === 9999}"
+		
+		>
+		Tous</a>
+	</li>
 	<li *ngFor="let category of categories">
 		<a 
 		class="menu-item" 

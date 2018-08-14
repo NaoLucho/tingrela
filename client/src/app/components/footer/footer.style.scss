@@ -1,15 +1,11 @@
 .footer-container {
+	display: flex;
 	margin-right: 13px;
 	margin-left: 13px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-}
-
-.copyright-box {
-}
-
-.icon-box {
-
+	justify-content: flex-end;
+	align-items: center;
 }
 
 .follow-icons {

@@ -26,26 +26,6 @@ export class BasketService {
     this.baseUrl = globals.getUrl()
   }
 
-  // GET Ecommerce Config (TVA)
-  getTva() {
-    if (this.tva) {
-      return Observable.of(this.tva);
-    } else {
-      const getTvaUrl = this.baseUrl + 'tva';
-      const headers = new Headers({ 'content-type': 'application/json' });
-      const options = new RequestOptions({ headers: headers });
-      return this.http.get(getTvaUrl, options)
-        .map(res => res.json().tva) // Ce qui est retourné
-        .do(data => {
-          this.tva = data.tva
-        })
-        .catch(this.handleErrorObservable)
-      // (error: any) => Observable.throw(error.json().error || 'Server error'));
-      // console.log(error));
-
-    }
-  }
-
   // testPostType()
   // {
   //   let typedata = [
@@ -126,6 +106,11 @@ export class BasketService {
     return this.basketlist
   }
 
+  clearBasket() {
+    this.basketlist = null
+    localStorage.setItem('basketlist', null)
+  }
+
   getBasketlistProducts() {
     if (!this.basketlist) {
       this.basketlist = JSON.parse(localStorage.getItem('basketlist'));
@@ -147,7 +132,6 @@ export class BasketService {
       // console.log(getBasketUrl + paramsStr);
       const headers = new Headers({ 'Content-Type': 'application/json' });
       const options = new RequestOptions({ headers: headers });
-      console.log(getBasketUrl + paramsStr)
       return this.http.get(getBasketUrl + paramsStr, options)
         .map(res => res.json())
         .do(data => {
@@ -160,14 +144,19 @@ export class BasketService {
   }
 
   getBasketPrice() {
-    let totalHT = 0;
+    let totalTTC = 0;
     this.basketlist.forEach(basketItem => {
       if (basketItem.qte && basketItem.qte >= 0 && this.basketProducts) {
         for (let p = this.basketProducts.length - 1; p >= 0; p--) {
           // console.log("this.products[p "+p+"].id = " + this.products[p].id + " == i :"+i+" > "+(this.products[p].id == i));
           if (this.basketProducts[p].id === basketItem.id) {
             // console.log((Number(basketItem.qte)))
-            totalHT = totalHT + (Number(this.basketProducts[p].price) * (Number(basketItem.qte) / Number(this.basketProducts[p].step)));
+            const tvaTotal = (1 + Number(this.basketProducts[p].tva.tva))
+            const priceNumbered = Number(this.basketProducts[p].price)
+            const stepNumbered = Number(this.basketProducts[p].step)
+            const qteNumbered = Number(basketItem.qte)
+
+            totalTTC = totalTTC + priceNumbered * tvaTotal * qteNumbered / stepNumbered;
             // console.log("this.products[p].price "+this.products[p].price+" * this.basket[i] "+this.basket[i]+"="+this.totalHT);
 
           }
@@ -175,7 +164,7 @@ export class BasketService {
       }
     })
     // console.log('totalHT' + totalHT)
-    return totalHT;
+    return totalTTC;
   }
 
   private handleErrorObservable(error: Response | any) {

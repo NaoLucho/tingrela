@@ -14,7 +14,8 @@ import { RouterModule } from '@angular/router'
   selector: 'app-basket',
   templateUrl: 'basket.component.html',
   animations: [fadeInAnimation, Fader()],
-  host: { '[@fadeInAnimation]': '' }
+  host: { '[@fadeInAnimation]': '' },
+  styleUrls: ['basket.styles.scss']
 })
 
 export class BasketComponent {
@@ -24,29 +25,12 @@ export class BasketComponent {
   basket = [];
   // basketItems = [];
   counter = Array;
-  totalHT = 0;
-  tva = 0;
   totalTTC = 0;
-  totalTva = 0;
 
   constructor(
     private basketService: BasketService
   ) {
-    this.getTva()
-  }
-
-  getTva() {
-    this.basketService.getTva().subscribe(data => {
-      // console.log("getTva in comp "+data)
-      if (data) {
-        this.tva = data;
-      }
-    }, error => {
-      // Log errors if any
-      alert('Il y a eu une erreur. Réferrez vous à l\'administrateur')
-    }, () => {
-      this.getBasket()
-    });
+  this.getBasket();
   }
 
   // Function to check storage validity (1day)
@@ -79,25 +63,24 @@ export class BasketComponent {
       .subscribe(data => {
           if (data) {
             this.products = data;
-            console.log(this.products)
             this.basket = this.basketService.getBasket();
-
-            // Assign product qte from basket
-            this.basket.forEach((basketItem) => {
-              this.products.forEach(product => {
-                if ( basketItem.id === product.id ) {
-                  product.qte = basketItem.qte;
-                }
+            if (this.basket !== null) {
+              // Assign product qte from basket
+              this.basket.forEach((basketItem) => {
+                this.products.forEach(product => {
+                  if ( basketItem.id === product.id ) {
+                    product.qte = basketItem.qte;
+                  }
+                });
+                this.refreshTotal();
               });
-              this.refreshTotal();
-            });
+            }
           }
         }, error => {
           // Log errors if any
           alert('Il y a eu une erreur. Réferrez vous à l\'administrateur.')
         }, () => {
           this.loader = 'false';
-          console.log('complete')
         }
       );
   }
@@ -109,13 +92,7 @@ export class BasketComponent {
   }
 
   refreshTotal() {
-    console.log('ok');
-    this.totalHT = this.basketService.getBasketPrice();
-    this.totalTva = this.totalHT * this.tva; // .00000001 apparait de temps en temps!?? c'est quoi ce délire
-    // this.totalTva.toFixed(2) //Ne résoud pas le problème
-    this.totalTva = +(Math.round(this.totalTva * 100)  / 100); // résoud le problème
-    // console.log(this.totalTva)
-    this.totalTTC = this.totalHT + this.totalTva;
+    this.totalTTC = this.basketService.getBasketPrice();
   }
 
   deleteformbasket(productId) {

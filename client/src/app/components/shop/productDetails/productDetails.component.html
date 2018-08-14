@@ -9,7 +9,7 @@
 
                 <p>{{product.description}} </p>
 
-                <p>Prix : {{product.price}} euros/kg </p>
+                <p>Prix : {{product.price * (1 + product.tva.tva)}} euros/kg </p>
 
                 <p>Quantité disponible : {{product.stock}} kg</p>
 

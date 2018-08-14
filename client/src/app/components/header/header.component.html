@@ -1,19 +1,15 @@
-<div class="grid-x align-center align-middle header" [@headerAnimation]="headerImg" style="opacity: 0">
-	<div class="small-4 text-right cell">
-		<a routerLink="/accueil" class="clear button brown large menu-link">Accueil</a>
-		<a routerLink="/shop/chocolats" class="clear button brown large menu-link">Chocolats</a>
-		<a routerLink="/shop/confiseries" class="clear button brown large menu-link">Confiseries</a>
-	</div>
-	<div class="shrink cell">
-		<img src="assets/img/logo/logo.png" alt="Logo" class="logo" (load)="headerImgLoaded()" >
-	</div>
-	<div class="small-4 cell">
-		<a routerLink="/profil" class="clear button brown large menu-link">Profil</a>
-		<a routerLink="/creations" class="clear button brown large menu-link">Mes créations</a>
-		<a routerLink="/contact" class="clear button brown large menu-link">Contact</a>
-		<a routerLink="/panier" class="clear button brown large menu-link"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-	</div>
+<div class="my-navbar" [@headerAnimation]="headerImg" style="opacity: 0" [ngClass]="{'my-nav-spaced': menu}" >
+	<a routerLink="/accueil" class="clear button brown large menu-link main-link" [ngClass]="{'show-menu': menu}">Accueil</a>
+    <a routerLink="/shop/chocolats" class="clear button brown large menu-link" [ngClass]="{'show-menu': menu}" >Chocolats</a>
+    <a routerLink="/shop/confiseries" class="clear button brown large menu-link" [ngClass]="{'show-menu': menu}" >Confiseries</a>
+    <img src="assets/img/logo/logo.png" alt="Logo" class="logo" (load)="headerImgLoaded()">
+    <a routerLink="/profil" class="clear button brown large menu-link" [ngClass]="{'show-menu': menu}">Profil</a>
+    <a routerLink="/creations" class="clear button brown large menu-link" [ngClass]="{'show-menu': menu}" >Mes créations</a>
+    <a routerLink="/contact" class="clear button brown large menu-link" [ngClass]="{'show-menu': menu}" >Contact</a>
+    <a routerLink="/panier" class="clear button brown large menu-link" [ngClass]="{'show-menu': menu}" >
+		<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+	</a>
+	<a class="sandwich clear button brown large" (click)="showMenu()" >
+		<i class="fa fa-bars"></i>
+	</a>
 </div>
-<!--
-  <a *ngIf="!hasAuthToken()" routerLink="/login" class="clear button brown large">Login</a>
-  <a *ngIf="hasAuthToken()" (click)="logout()" href="#" class="clear button brown large">Logout</a> -->

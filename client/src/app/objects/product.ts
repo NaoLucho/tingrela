@@ -12,4 +12,5 @@ export class Product {
   step: number;
   placement: number;
   qte: number;
+  tva: any;
 }

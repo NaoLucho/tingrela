@@ -1,5 +1,5 @@
 <div class="contentpage" style="opacity: 0" [@visibilityChanged]="loader == 'false'">
-  <div class="grid-container">
+  <div class="grid-container my-container-margin">
     <h2>Votre Panier</h2>
     <div class="grid-x grid-margin-x">
       <div class="cell auto">
@@ -8,8 +8,8 @@
             <tr>
               <th>Références</th>
               <th>Quantité</th>
-              <th>Prix</th>
-              <th>Total HT</th>
+              <th>Prix (tva)</th>
+              <th>Total TTC</th>
             </tr>
           </thead>
           <tbody>
@@ -21,19 +21,28 @@
 
             <tr *ngFor="let product of products">
               <td>{{ product.name }}</td>
-              <td>
-                <div class="product-quantity">
-                  <button class="button tiny quantity-button" *ngIf="product.qte" (click)="deleteQte(product)"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                  <span *ngIf="product.qte">{{product.qte}}</span>
-                  <span *ngIf="!product.qte">0</span>
-                  <span> {{product.unit}}</span>
-                  <button class="button tiny quantity-button" (click)="addQte(product)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+              <td class='basket-item-wrapper' >
+                <button class="button tiny quantity-button" *ngIf="product.qte" (click)="deleteQte(product)"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                <span *ngIf="product.qte">{{product.qte}}</span>
+                <span *ngIf="!product.qte">0</span>
+                <span> {{product.unit}}</span>
+                <button class="button tiny quantity-button" (click)="addQte(product)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                <div class="trash-item-wrapper">
+                  <button class='trash-button' (click)="deleteformbasket(product.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 </div>
-
-                <a (click)="deleteformbasket(product.id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
               </td>
-              <td>{{ product.price }}€/{{ product.step }} {{ product.unit }}</td>
-              <td>{{ (product.qte/product.step) * product.price }} € </td>
+              <td>{{ product.price * (1 + product.tva.tva) }}€/{{ product.step }} {{ product.unit }} ( {{product.tva.tva *100}}% )</td>
+              <td>{{ (product.qte/product.step) * product.price * ( 1 + product.tva.tva ) | number: '1.2-2' }} € </td>
+            </tr>
+            <tr>
+              <td><b>Total</b></td>
+              <td></td>
+              <td></td>
+              <td>
+                <b>
+                  {{ totalTTC }} €
+                </b>
+              </td>
             </tr>
 
           </tbody>
@@ -44,32 +53,7 @@
         <a routerLink="/shop/chocolats" class="button classic-button">Continuer mes achats</a>
 
       </div>
-      <div *ngIf="products.length > 0" class="cell small-3">
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th colspan="2">Récapitulatif</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>Total HT :</th>
-              <th>{{ totalHT }} €</th>
-            </tr>
-            <tr>
-              <th>+ TVA ({{(tva*100)}}%)</th>
-              <th>{{ totalTva }} €</th>
-            </tr>
-            <tr>
-              <th>Total TTC :</th>
-              <th>{{ totalTTC }} €</th>
-            </tr>
-          </tbody>
-        </table>
-        <div class="clearfix"></div>
-      </div>
-    </div>
+    </div> 
   </div>
 </div>
 

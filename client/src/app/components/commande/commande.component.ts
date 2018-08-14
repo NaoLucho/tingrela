@@ -45,7 +45,7 @@ export class CommandeComponent {
   // finishchanged;
 
   submitted = false;
-  errorMessage = '';
+  errorMessage: string = null;
 
   constructor(
     // private dataService: DataService,
@@ -53,16 +53,7 @@ export class CommandeComponent {
     private basketService: BasketService,
     private router: Router
   ) {
-
-    this.commande.firstname = 'Louis'
-    this.commande.lastname = 'Watrin'
-    this.commande.email = 'votre@email.fr'
-    this.commande.phone = '0115151501'
-    this.commande.adresse = '1 rue ou tabite'
-
-    this.commande.postalcode = 12345
-    this.commande.city = 'VILLE'
-    this.getTva()
+    this.getBasket();
   }
 
 
@@ -91,71 +82,52 @@ export class CommandeComponent {
       opened: function () {
         _this.loader = 'false'
       },
-      closed: function() {
-        _this.loader = 'false'
-      },
-      // email: 'toto@dede.de', // TRY TO ADD EMAIL
       token: function (token: any) {
         // You can access the token ID with `token.id`.
         // Get the token ID to your server-side code for use.
 
         // ICI Enregister la commande, puis rediriger vers le service de paiement.
-        // console.log(token)
-        _this.loader = 'true'
         let resp: Observable<any>
         // _this.basketService.postBasket(10,3);
 
-
-
         resp = _this.paymentService.postPayment(token.id, _this.commande, _this.basket, _this.totalTTC)
+        _this.loader = 'true'
 
         resp.subscribe(
           data => {
-            // console.log("data :")
-            // console.log(data)
-            const ref = data.reference.substring(20);
-            const navigationExtras: NavigationExtras = {
-              queryParams: {
-                'reference': ref
-              }
-            };
-            _this.router.navigate(['payment'], navigationExtras);
+            if (data.dataValidated === true) {
+              const ref = data.ref;
+              const total = data.total;
+              const navigationExtras: NavigationExtras = { queryParams: { reference: ref, total: total, email: _this.commande.email } };
+              _this.router.navigate(['payment'], navigationExtras);
+            } else {
+              _this.errorMessage = 'Une erreur s\'est produite lors de la validation de votre achat référencé '
+              + data.ref + '. Votre carte n\'a pas été débitée. Veuillez réessayer ou nous contacter si l\'erreur persiste';
+            }
           },
           error => {
-            // console.log('error :')
-            // console.log(error)
-            // console.log(error.exception.message)
-
-            // LOG ERROR
-            _this.errorMessage = 'Une erreur est survenue, le paiement est annulé. \nErreur =' + error.exception.message;
-            _this.loader = 'false'
+            if (error.status === 500) {
+              _this.errorMessage = 'Une erreur s\'est produite. Votre carte n\'a pas été débitée. ' +
+              'Veuillez ressayer ou nous contacter si le problème persiste.'
+            } else {
+              _this.errorMessage = 'Une erreur s\'est produite' +
+              ' Veuillez vérifier votre connexion internet ou réessayer ultérieurement.'
+            }
+            _this.loader = 'false';
+          },
+          () => {
+            _this.loader = 'false';
           }
         )
-        // _this.sendPayment(token, _this.commande);
 
       }
     });
+
     this.handler.open({
       amount: this.totalTTC * 100// en centimes: 100 = 1€
     });
   }
 
-  getTva() {
-    this.basketService.getTva()
-      .subscribe(data => {
-        // console.log("getTva in comp " + data)
-        if (data) {
-          this.tva = data
-        }
-      },
-      err => {
-        // Log errors if any
-        // console.log(err);
-        alert('Il y a eu une erreur. Réferrez vous à l\'administrateur')
-      }, () => {
-        this.getBasket();
-      });
-  }
 
   getBasket() {
     this.basketService
@@ -180,13 +152,7 @@ export class CommandeComponent {
   }
 
   refreshTotal() {
-    this.totalHT = this.basketService.getBasketPrice();
-    this.totalTva = this.totalHT * this.tva; // .00000001 apparait de temps en temps!?? c'est quoi ce délire
-    // this.totalTva.toFixed(2) //Ne résoud pas le problème
-    this.totalTva = +(Math.round(this.totalTva * 100) / 100); // résoud le problème
-    // console.log(this.totalHT);
-    // console.log(this.totalTva)
-    this.totalTTC = this.totalHT + this.totalTva;
+    this.totalTTC = this.basketService.getBasketPrice();
   }
 
   addclass(element, className) {

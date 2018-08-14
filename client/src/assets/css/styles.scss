@@ -58,11 +58,11 @@ body {
 }
 
 .catcher {
-    text-align: center;
     margin-top: 10px;
-    margin-bottom: 20px;
     font-size: 17px;
     font-family: $titles;
+    padding: 0 10px 10px 10px;
+    text-align: center;
 }
 
 .header {
@@ -72,7 +72,6 @@ body {
 .menu-link {
     font-family: $text;
     font-weight: bold;
-    padding: 10px;
 }
 
 .type-button-container {
@@ -116,4 +115,13 @@ body {
 .classic-button:hover {
     color: white;
     background-color: $light-brown;
+}
+
+
+@media screen and (max-width: 900px) {
+  .my-container-margin {
+    margin-left: 15px;
+    margin-right: 15px;
+    ;
+  }
 }

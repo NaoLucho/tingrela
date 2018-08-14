@@ -27,10 +27,7 @@ export class PaymentService {
 
   postPayment(token, commande: Commande, basket: Array<any>, amount: number) {
     const postPayment = this.baseUrl + 'payment';
-    // console.log("commande"+ commande.firstname);
-    // console.log("send to server the payment with token = ");
-    // console.log(token)
-    console.log(amount)
+
     const postdata = {
       token: token,
       commande: commande,

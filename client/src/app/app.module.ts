@@ -31,7 +31,6 @@ import { FooterComponent } from './components/footer/footer.component'
 
 import { PostComponent } from './post/post.component'
 
-
 import { TypeBlockComponent } from './components/home/typeBlock/typeBlock.component'
 import { CategoryListComponent } from './components/shop/categoryList/categoryList.component'
 import { ProductListComponent } from './components/shop/productList/productList.component'
