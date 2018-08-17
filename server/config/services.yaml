@@ -1,11 +1,17 @@
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
+imports:
+    - { resource: parameters.yaml}
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: 'en'
+    locale: 'fr'
     stripe_api_key: '%env(STRIPE_API_KEY)%'
+    user_email: '%env(MAILER_USER)%'
+    user_email_pass: '%env(MAILER_PASS)%'
+    mailer_host: '%env(MAILER_HOST)%'
+    mailer_port: '%env(MAILER_PORT)%'
 
 services:
     # default configuration for services in *this* file
@@ -41,3 +47,10 @@ services:
 
     my.stripe.client:
         alias: App\Services\StripeClient
+
+    App\Services\Mailer:
+        arguments:
+            $sender: '%env(MAILER_USER)%'
+
+    my.mailer:
+        alias: App\Services\Mailer

@@ -14,9 +14,12 @@ use App\Entity\CommandeBasket;
 use App\Entity\Customer;
 use App\Form\Type\CommandeType;
 use App\Services\StripeClient;
+use App\Services\Mailer;
 
 class BasketController extends Controller
 {
+  private $commandId;
+
   /**
    * @Rest\Get("/basket/products")
    */
@@ -36,7 +39,7 @@ class BasketController extends Controller
   /**
    * @Rest\Post("/payment")
    */
-  public function payment(Request $request, StripeClient $stripeClient)
+  public function postPayment(Request $request, StripeClient $stripeClient)
   {
     $errorMessage = "";
 
@@ -90,7 +93,7 @@ class BasketController extends Controller
     //Amount calculer ici avec les produits du panier pour vérifier qu'il n'y a pas eu de changement ou erreur coté client
     $amountCheck = 0;
     $ecommerceConfig = $em->getRepository('App:EcommerceConfig')->find(1);
-    $tva = $ecommerceConfig->getTva();
+    // $tva = $ecommerceConfig->getTva();
 
     
     $basketReq = $requestContent['basket'];
@@ -105,15 +108,13 @@ class BasketController extends Controller
         $commandProduct->setCommande($commande);
         $product = $em->getRepository('App:Product')->find($item['id']);
         if ($product) {
-          $amountCheck = $amountCheck + $product->getPrice() * floatval($item['qte']) / $product->getStep(); 
+          $amountCheck = $amountCheck + $product->getPrice() * floatval($item['qte']) * ( 1 + $product->getTva()->getTva() ) / $product->getStep(); 
 
           $commandProduct->setProduct($product);
           $commandProduct->setQuantity($item['qte']);
           $em->persist($commandProduct);
         }
       };
-
-      $amountCheck = $amountCheck+$amountCheck*$tva;
 
       if((float)$amountCheck != $amount) {
 
@@ -128,23 +129,115 @@ class BasketController extends Controller
     /* $stripeClient = $this->get('flosch.stripe.client'); *//* 
     $customer = $stripeClient->createCustomer($token, $commandeReq['firstname'] . ' ' . $commandeReq['lastname']); */
     /*  $payment = $stripeClient->createCharge($amount*100, 'eur', $token, null, 0, 0, [ $commandeReq['firstname'] . ' ' . $commandeReq['lastname'] ]); */
-    
+    $em->flush();
+    $commandId = $commande->getId();
+    $this->sendReceiptEmail($commandId);
+
     try {
-      $response = $stripeClient->createCharge($token, $amount*100);
+      $response = $stripeClient->createCharge($token, $amount*100, $commandeReq['email']);
       $commande->setValidated(true);
       $em->flush();
-      return View::create('Achat validé', Response::HTTP_OK);
+      $this->sendValidationEmail($commandId, true);
+      return View::create(array(
+        "message"=> "Achat validé", 
+        "total"=> $amountCheck, 
+        "ref"=> uniqid() . $commandId,
+        "dataValidated" => true
+      ), Response::HTTP_OK);
     }
     
     catch (\Stripe\Error\Base $e) {
       /* $this->addFlash('warning', sprintf('Unable to take payment, %s', $e instanceof \Stripe\Error\Card ? lcfirst($e->getMessage()) : 'please try again.')); */
       $response = $e->getMessage();
       $commande->setValidated(false);
+      $commande->setError($response);
       $em->flush();
-      return View::create($e, 402);
+      $this->sendValidationEmail($commandId, false);
+      return View::create(array(
+        "dataValidated" => false,
+        "ref" =>uniqid() . $commandId,
+      ), Response::HTTP_OK);
     } 
     
     /* return View::create($payment, Response::HTTP_OK); */
 
+  }
+
+  public function sendReceiptEmail($commandId)
+  {
+
+    $em = $this->get('doctrine.orm.entity_manager');
+
+    $command = $em->getRepository('App:Commande')->find($commandId);
+    $customer= $command->getCustomer()->getEmail();
+    $ecommerceConfig = $em->getRepository('App:EcommerceConfig')->find(1);
+    $commandBasket = $em->getRepository('App:CommandeBasket')->findBy(['commande' => $command->getId()]);
+
+    $message = (new \Swift_Message('Votre commande de chocolats'))
+        ->setFrom($this->getParameter('user_email'))
+        ->setTo($customer)
+        ->setSubject('Commande Julien Gayraud Chocolatier Confiseur')
+        ->setBody(
+             $this->renderView(
+                // templates/emails/registration.html.twig
+                'emails/bill.html.twig',
+                array('command' => $command, 'basket' => $commandBasket)
+            ),
+            'text/html'
+        )
+    ;
+
+    $transport = (new \Swift_SmtpTransport($this->getParameter('mailer_host'), $this->getParameter('mailer_port')))
+      ->setUsername($this->getParameter('user_email'))
+      ->setPassword($this->getParameter('user_email_pass'))
+    ;
+
+    $mailer = new \Swift_Mailer($transport);
+    // Envoie du récap au client
+    $mailer->send($message);
+  }
+
+  public function sendValidationEmail($commandId, $checker)
+  {
+
+    $em = $this->get('doctrine.orm.entity_manager');
+
+    $command = $em->getRepository('App:Commande')->find($commandId);
+    $customer= $command->getCustomer()->getEmail();
+    $ecommerceConfig = $em->getRepository('App:EcommerceConfig')->find(1);
+    $commandBasket = $em->getRepository('App:CommandeBasket')->findBy(['commande' => $command->getId()]);
+
+    $message = (new \Swift_Message('Votre commande de chocolats'))
+        ->setFrom($this->getParameter('user_email'))
+        ->setTo($customer);
+        if( $checker == false) {
+          $message->setSubject('Paiement refusé');
+        } else {
+          $message->setSubject('Commande validée et en cours de réalisation');
+        }
+        $message->setBody(
+             $this->renderView(
+                // templates/emails/registration.html.twig
+                'emails/validation.html.twig',
+                array('command' => $command, 'basket' => $commandBasket, 'checker' => $checker)
+            ),
+            'text/html'
+        )
+    ;
+
+    $transport = (new \Swift_SmtpTransport($this->getParameter('mailer_host'), $this->getParameter('mailer_port')))
+      ->setUsername($this->getParameter('user_email'))
+      ->setPassword($this->getParameter('user_email_pass'))
+    ;
+
+    $mailer = new \Swift_Mailer($transport);
+    // Envoie du récap au client
+    $mailer->send($message);
+
+    // Envoie du récap à Julien pour faire la commande
+    if($checker == true) {
+      $message->setTo($this->getParameter('user_email'));
+      $mailer->send($message);
+    }
   }
 }

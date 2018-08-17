@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Entity\Category;
+use App\Entity\EcommerceConfig;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -80,6 +81,14 @@ class Product
     * @ORM\ManyToMany(targetEntity="App\Entity\Category", mappedBy="products", cascade={"persist"})
     */
     private $categories;
+
+    /**
+     * @var EcommerceConfig
+     *
+     * @ORM\ManyToOne(targetEntity="EcommerceConfig", inversedBy="product")
+     * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
+     */
+    private $tva;
 
     public function __toString() {
         return $this->name;
@@ -255,4 +264,30 @@ class Product
     {
         return $this->categories;
     }
+
+    /**
+     * Set tva
+     *
+     * @param EcommerceConfig $tva
+     *
+     * @return Product
+     */
+    public function setTva($tva)
+    {
+        $this->tva = $tva;
+
+        return $this;
+    }
+
+    /**
+     * Get tva
+     *
+     * @return EcommerceConfig
+     */
+    public function getTva()
+    {
+        return $this->tva;
+    }
+
+
 }

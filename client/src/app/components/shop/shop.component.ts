@@ -20,6 +20,7 @@ export class ShopComponent implements OnInit {
     error: string = null;
     type: Type;
     public categories: string[]
+    public visibility = 'false'
 
     constructor(
         private dataService: DataService
@@ -28,6 +29,7 @@ export class ShopComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.visibility = 'true'
         this.dataService.getDataSubscribed().subscribe(data => {
         if (data) {
           this.data = data;

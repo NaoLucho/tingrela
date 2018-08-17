@@ -20,12 +20,12 @@ import { GlobalsService } from './../../../services/globals.service'
 
 export class ProductListComponent implements OnChanges, OnInit {
   @Input() data: any
-  protected products: any
+  public products: any
   private type: string
-  private category: string
+  public category: string
   private overlay: number
   private visibility = []
-  private loader = 'true'
+  public loader = 'true'
   private nbImages = 0;
   private imagesLoaded = false;
   private serverUrl: string;

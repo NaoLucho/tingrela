@@ -18,7 +18,7 @@ import { GlobalsService } from './../../../services/globals.service'
 })
 
 export class ProductDetailsComponent implements OnInit {
-  private product: Product;
+  public product: Product;
   private searchedProductID;
   private serverUrl: string;
 

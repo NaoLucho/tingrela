@@ -69,6 +69,11 @@ class Commande
      */
     private $total;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $error;
+
     public function __toString() {
         return '' . $this->id;
     }
@@ -197,14 +202,26 @@ class Commande
         return $this;
     }
 
-    public function getTotal(): ?int
+    public function getTotal(): ?float
     {
         return $this->total;
     }
 
-    public function setTotal(int $total): self
+    public function setTotal(float $total): self
     {
         $this->total = $total;
+
+        return $this;
+    }
+
+    public function getError(): ?string
+    {
+        return $this->error;
+    }
+
+    public function setError(?string $error): self
+    {
+        $this->error = $error;
 
         return $this;
     }

@@ -23,6 +23,7 @@ easy_admin:
                     - 'importance'
                     - { property: 'imageFile', type: 'vich_image' }
                     - { property: 'categories', type_options: { by_reference: false } }
+                    - 'tva'
         Category:
             class: App\Entity\Category
             label: 'Catégories'

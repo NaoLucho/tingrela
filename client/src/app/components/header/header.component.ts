@@ -17,8 +17,8 @@ import { AuthenticationService } from '../../authentication/authentication.servi
   ]
 })
 export class HeaderComponent {
-  private headerImg = 'false';
-  private menu = false;
+  public headerImg = 'false';
+  public menu = false;
 
   headerImgLoaded() {
     this.headerImg = 'true';

@@ -1,0 +1,35 @@
+<h3>Commande Julien Gayraud Chocolatier Confiseur</h3>
+
+<b>Votre commande a bien été prise en compte et est en attente de paiement. Un reçu vous sera envoyé par Email une fois votre paiement validé.</b>
+<br><br>
+
+Résumé de votre commande: 
+
+<table>
+    <tr>
+        <th>Produit</th>
+        <th>Quantité</th>
+        <th>Prix</th>
+    </tr>
+    {% for item in basket %}
+        <tr>
+            <td>
+                {{ item.product.name }} 
+            </td>
+            <td>
+                {{ item.quantity }} {{ item.product.unit }}
+            </td>
+            <td>
+                {{ item.product.price * item.quantity / item.product.step * (1 + item.product.tva.tva) }} €
+            </td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td><b>Total</b></td>
+        <td></td>
+        <td><b>{{ command.total }}</b> €</td>
+    </tr>
+</table>
+
+<p>Cordialement</p>
+<p>J. Gayraud Chocolatier Confiseur</p>

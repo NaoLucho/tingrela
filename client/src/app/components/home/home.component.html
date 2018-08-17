@@ -11,7 +11,7 @@
 </div>
 
 <div class="grid-x grid-padding-x" [@visibilityChanged]="visibility" style="opacity:0">
-  <my-nav-tree *ngFor="let type of data" [parentType]="type" class="cell small-12 large-6"></my-nav-tree>
+  <app-nav-tree *ngFor="let type of data" [parentType]="type" class="cell small-12 large-6"></app-nav-tree>
 </div>
 
 <div class="loader" [@visibilityChanged]="loader" >

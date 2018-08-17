@@ -1,0 +1,48 @@
+{% if checker == false %}
+    <h4>Le paiement de votre commande a été refusé. Rien n'a été débité sur votre compte. </h4>
+{% else %}
+    
+    <h2>Votre paiement a été accepté et votre commande est en cours de réalisation<h2>
+
+    Résumé de votre commande:
+
+    <table>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix</th>
+        </tr>
+        {% for item in basket %}
+            <tr>
+                <td>
+                    {{ item.product.name }}
+                </td>
+                <td>
+                    {{ item.quantity }}
+                    {{ item.product.unit }}
+                </td>
+                <td>
+                    {{ item.product.price * item.quantity / item.product.step * (1 + item.product.tva.tva) }}
+                    €
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td>
+                <b>Total</b>
+            </td>
+            <td></td>
+            <td>
+                <b>{{ command.total }}</b>
+                €</td>
+        </tr>
+    </table>
+
+    <h3>Adresse d'envoie</h3>
+
+    <p>{{ command.address }}</p>
+    <p>{{ command.postalcode }} {{ command.city }} </p>
+{% endif %}
+
+<p>Cordialement</p>
+<p>J. Gayraud Chocolatier Confiseur</p>

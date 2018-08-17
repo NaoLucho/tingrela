@@ -6,60 +6,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\View\View;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use App\Services\Mailer;
 
 class MailerController extends Controller
 {
       
     /** 
      * @Route("/email")
-     */
-    public function emailReceipt(\Swift_Mailer $mailer)
+    */
+    public function emailReceipt(Mailer $mailer)
     {
-    $message = (new \Swift_Message('Hello Email'))
-        ->setFrom('aaronleehartnell@gmail.com')
-        ->setTo('aaronleehartnell@gmail.com')
-        ->setBody(
-            '<html><head></head><body>Test email</body></html>',
-            'text/html'
-        )
-        /*
-         * If you also want to include a plaintext version of the message
-        ->addPart(
-            $this->renderView(
-                'emails/registration.txt.twig',
-                array('name' => $name)
-            ),
-            'text/plain'
-        )
-        */
-    ;
+        $mailer->emailReceipt(34);
 
-    $mailer->send($message);
-    return new Response(
-        '<html><body>Lucky number: </body></html>'
-    );
-  }
-}
-
-/* public function contactAction(Request $request)
-    {
-
-        $data = $request->request->all();
-
-        // Send mail
-        if ($this->sendEmail($data)) {
-
-            // Everything OK, redirect to wherever you want ! :
-
-            return $this->render('MNHNPortailBundle:Contact:success.html.twig');
-        } else {
-            // An error ocurred, handle
-            // TODO
-            //dump("Errooooor 😞");
-        }
-        
+        return new Response(
+            '<html><body>Lucky number: </body></html>'
+        );
     }
- */
+}
     /* private function sendEmail($data)
     {
         $container = $this->container;

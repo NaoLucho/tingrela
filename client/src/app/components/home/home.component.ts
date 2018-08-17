@@ -6,39 +6,39 @@ import { Fader } from './../../animations/fader.animation'
 import { DataService } from './../../services/data.service'
 
 @Component ({
-	selector: 'my-accueil',
-	templateUrl: 'home.component.html',
+    selector: 'app-accueil',
+    templateUrl: 'home.component.html',
     animations: [
-		fadeInAnimation,
-		Fader()
-	],
+        fadeInAnimation,
+        Fader()
+    ],
     host: { '[@fadeInAnimation]': '' }
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-	data;
-	error: string = ''
-	protected visibility = "false"
-	private loader = "true"
+    data;
+    error = ''
+    public visibility = 'false'
+    public loader = 'true'
 
-	constructor(
-		private dataService: DataService
-		) {
+    constructor(
+        private dataService: DataService
+        ) {
 
-		this.dataService.getDataSubscribed().subscribe(data => {
+        this.dataService.getDataSubscribed().subscribe(data => {
         this.data = data;
         if (this.data) {
-          this.visibility = "true";
-          this.loader = "false";
+          this.visibility = 'true';
+          this.loader = 'false';
         }
-		}, err => /* console.log(err)); */alert('Il y a eu une erreur. Réferrez vous à l\'administrateur'))
+        }, err => /* console.log(err)); */alert('Il y a eu une erreur. Réferrez vous à l\'administrateur'))
 
-		this.dataService.initData();
-	}
+        this.dataService.initData();
+    }
 
-		ngOnInit() {
+        ngOnInit() {
 
-		}
+        }
 
 }

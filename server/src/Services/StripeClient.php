@@ -41,13 +41,14 @@ class StripeClient
     \Stripe\Stripe::setApiKey($stripeApiKey);
   }
  
-  public function createCharge($token, $amount)
+  public function createCharge($token, $amount, $email)
   {
     try {
       $charge = \Stripe\Charge::create([
         'amount' => $amount,
         'currency' => 'eur',
-        'source' => $token
+        'source' => $token,
+        'receipt_email' => $email
       ]);
       return $charge;
     } catch (\Stripe\Error\Base $e) {

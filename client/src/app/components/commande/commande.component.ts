@@ -42,7 +42,7 @@ export class CommandeComponent {
   totalTTC = 0;
   totalTva = 0;
   public commande: Commande = new Commande();
-  // finishchanged;
+  public email_finishchanged;
 
   submitted = false;
   errorMessage: string = null;
