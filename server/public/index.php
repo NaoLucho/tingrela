@@ -7,15 +7,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 require __DIR__.'/../vendor/autoload.php';
 
-$_SERVER['APP_ENV']='prod';
-$_SERVER['APP_SECRET']='d9d57f145367de6ad154938d340df2dc';
-$_SERVER['DATABASE_URL']='mysql://root:@127.0.0.1:3306/gjchoc';
-$_SERVER['STRIPE_API_KEY']='sk_test_XpQIM8XGNO2BoGr3mpdjNWsm';
-$_SERVER['MAILER_USER']='aaronleehartnell@gmail.com';
-$_SERVER['MAILER_PASS']='3cur3u1l3cur3u1l';
-$_SERVER['MAILER_HOST']='smtp.gmail.com';
-$_SERVER['MAILER_PORT']=465;
-$_SERVER['CORS_ALLOW_ORIGIN']='^https?://localhost(:[0-9]+)?$';
+// $_SERVER['APP_ENV']='prod';
+// $_SERVER['APP_SECRET']='d9d57f145367de6ad154938d340df2dc';
+// $_SERVER['DATABASE_URL']='mysql://root:@127.0.0.1:3306/gjchoc';
+// $_SERVER['STRIPE_API_KEY']='sk_test_XpQIM8XGNO2BoGr3mpdjNWsm';
+// $_SERVER['MAILER_USER']='aaronleehartnell@gmail.com';
+// $_SERVER['MAILER_PASS']='3cur3u1l3cur3u1l';
+// $_SERVER['MAILER_HOST']='smtp.gmail.com';
+// $_SERVER['MAILER_PORT']=465;
+// $_SERVER['CORS_ALLOW_ORIGIN']='^https?://localhost(:[0-9]+)?$';
 
 // The check is to ensure we don't use .env in production
 if (!isset($_SERVER['APP_ENV'])) {

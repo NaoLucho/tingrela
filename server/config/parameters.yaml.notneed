@@ -1,0 +1,22 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+
+parameters:
+    database_host: serverdb.mysql.db
+    database_port: null
+    database_name: database_name
+    database_user: database_user
+    database_password: database_password
+    
+    mailer_transport: gmail
+    mailer_host: null
+    mailer_user: louis.watrin@gmail.com
+    mailer_password: GMAIL----
+    mailer_encryption: ssl
+    project_name: tingrela
+    upload_prefix: /uploads
+    image_prefix: '%upload_prefix%/img'
+    secret: cocosecret
+    template_repo: site
+    table_prefix: ti_
